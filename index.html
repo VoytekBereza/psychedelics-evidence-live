@@ -23,6 +23,9 @@
     .wrap { min-height:100vh; padding:var(--space-8) var(--space-6); display:flex; flex-direction:column; align-items:center; }
     .inner { max-width:1180px; width:100%; }
     .header { margin-bottom:var(--space-6); }
+    .header-top { display:flex; justify-content:space-between; align-items:flex-start; gap:var(--space-5); }
+    .logo { height:56px; width:auto; flex-shrink:0; }
+    @media (max-width:640px) { .logo { height:38px; } }
     .eyebrow { font-weight:500; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:#c25be0; margin-bottom:var(--space-2); }
     h1 { font-weight:500; font-size:37px; line-height:1.15; color:#f3eef8; margin:0 0 var(--space-2) 0; }
     .desc { font-size:15px; color:#b09fc2; margin:0; max-width:760px; }
@@ -87,8 +90,13 @@
     <div class="wrap">
       <div class="inner">
         <div class="header">
+          <div class="header-top">
+            <div>
           <div class="eyebrow">Psychedelic Medicine Research</div>
           <h1>Every Condition Psychedelics Have Been Studied to Treat</h1>
+            </div>
+            <img class="logo" src="Logo_no_background.png" alt="Australian Psychedelic Society logo">
+          </div>
         <p class="desc">Evidence categorised and colour-coded by strength. Sourced from published trials, meta-analyses, and regulatory filings. Scientific evidence is dynamic, this page is reviewed monthly and every card links out to live search.</p>
         </div>
       

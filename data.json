@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "lastReviewed": "2026-07-01",
+    "nextReview": "2026-08-01",
+    "note": "Tier changes are proposed by scripts/check-evidence.js and confirmed by a human before publishing."
+  },
+  "tiers": {
+    "strong": { "label": "Strong", "color": "rgba(63,157,91,0.85)", "swatch": "#3f9d5b", "rank": 0, "criteria": "Multiple RCTs or meta-analyses" },
+    "emerging": { "label": "Emerging", "color": "rgba(201,154,59,0.85)", "swatch": "#c99a3b", "rank": 1, "criteria": "Phase 2 / pilot trials" },
+    "early": { "label": "Early", "color": "rgba(184,80,63,0.85)", "swatch": "#b8503f", "rank": 2, "criteria": "Case reports, observational, preclinical" }
+  },
+  "sections": [
+    {
+      "title": "Depression & Mood",
+      "sub": "The core of the field",
+      "consensus": "https://consensus.app/search/do-psychedelics-work-for-depression-mood/ycOArL0IRmGvd8jPeSI1lg/?utm_source=share&utm_medium=clipboard",
+      "items": [
+        { "condition": "Major depressive disorder", "drug": "Psilocybin", "tier": "strong", "query": "psilocybin AND \"major depressive disorder\"" },
+        { "condition": "Treatment-resistant depression", "drug": "Psilocybin", "tier": "strong", "query": "psilocybin AND \"treatment-resistant depression\"" },
+        { "condition": "Treatment-resistant depression", "drug": "5-MeO-DMT", "tier": "emerging", "query": "\"5-MeO-DMT\" AND depression" },
+        { "condition": "Postpartum depression", "drug": "5-MeO-DMT", "tier": "early", "query": "\"5-MeO-DMT\" AND \"postpartum depression\"" },
+        { "condition": "Bipolar II depression", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND \"bipolar II\"" }
+      ]
+    },
+    {
+      "title": "Anxiety & PTSD",
+      "sub": "Fear, threat and trauma",
+      "consensus": "https://consensus.app/search/?q=do+psychedelics+help+anxiety+and+ptsd",
+      "items": [
+        { "condition": "End-of-life anxiety", "drug": "Psilocybin", "tier": "strong", "query": "psilocybin AND (\"end-of-life\" OR \"cancer-related anxiety\")" },
+        { "condition": "PTSD", "drug": "MDMA", "tier": "strong", "query": "MDMA AND \"posttraumatic stress\"" },
+        { "condition": "Generalized anxiety disorder", "drug": "LSD", "tier": "emerging", "query": "(LSD OR MM120) AND \"generalized anxiety\"" },
+        { "condition": "Social anxiety in autistic adults", "drug": "MDMA", "tier": "emerging", "query": "MDMA AND autism AND \"social anxiety\"" }
+      ]
+    },
+    {
+      "title": "Addiction & Substance Use",
+      "sub": "Breaking the loop",
+      "consensus": "https://consensus.app/search/?q=psychedelics+for+addiction+and+substance+use+disorder",
+      "items": [
+        { "condition": "Smoking cessation", "drug": "Psilocybin", "tier": "emerging", "query": "psilocybin AND \"smoking cessation\"" },
+        { "condition": "Alcohol use disorder", "drug": "Psilocybin", "tier": "emerging", "query": "psilocybin AND \"alcohol use disorder\"" },
+        { "condition": "Alcohol use disorder", "drug": "Mescaline", "tier": "early", "query": "mescaline AND alcohol" },
+        { "condition": "Alcohol use disorder", "drug": "Noribogaine", "tier": "early", "query": "noribogaine AND alcohol" },
+        { "condition": "Opioid use disorder", "drug": "Ibogaine", "tier": "early", "query": "ibogaine AND \"opioid use disorder\"" },
+        { "condition": "Cocaine & methamphetamine use", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND (cocaine OR methamphetamine)" }
+      ]
+    },
+    {
+      "title": "Pain & Headache",
+      "sub": "Some of medicine's hardest cases",
+      "consensus": "https://consensus.app/search/?q=psychedelics+for+migraine+and+cluster+headache",
+      "items": [
+        { "condition": "Cluster headache", "drug": "Psilocybin", "tier": "emerging", "query": "psilocybin AND \"cluster headache\"" },
+        { "condition": "Migraine", "drug": "Psilocybin", "tier": "emerging", "query": "psilocybin AND migraine" },
+        { "condition": "Fibromyalgia", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND fibromyalgia" },
+        { "condition": "Chronic & phantom limb pain", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND (\"chronic pain\" OR \"phantom limb\")" }
+      ]
+    },
+    {
+      "title": "Neurology & Brain Injury",
+      "sub": "Regrowing connections",
+      "consensus": "https://consensus.app/search/?q=psychedelics+for+traumatic+brain+injury+and+neurology",
+      "items": [
+        { "condition": "Traumatic brain injury (veterans)", "drug": "Ibogaine", "tier": "emerging", "query": "ibogaine AND \"traumatic brain injury\"" },
+        { "condition": "Parkinson's disease", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND parkinson" },
+        { "condition": "Stroke recovery", "drug": "Psychedelics", "tier": "early", "query": "psychedelic AND stroke AND recovery" }
+      ]
+    },
+    {
+      "title": "Compulsive & Body-Focused",
+      "sub": "Stuck thoughts, self-image",
+      "consensus": "https://consensus.app/search/?q=psilocybin+for+ocd+and+body+dysmorphic+disorder",
+      "items": [
+        { "condition": "Obsessive-compulsive disorder", "drug": "Psilocybin", "tier": "emerging", "query": "psilocybin AND \"obsessive-compulsive\"" },
+        { "condition": "Body dysmorphic disorder", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND \"body dysmorphic\"" },
+        { "condition": "Eating disorders / anorexia", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND (anorexia OR \"eating disorder\")" }
+      ]
+    },
+    {
+      "title": "Palliative & End-of-Life Care",
+      "sub": "Loss of meaning and hope",
+      "consensus": "https://consensus.app/search/?q=psilocybin+for+end+of+life+distress",
+      "items": [
+        { "condition": "Demoralization, long-term AIDS survivors", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND demoralization" }
+      ]
+    },
+    {
+      "title": "Emerging & Preclinical",
+      "sub": "Whole-body, newly-explored targets",
+      "consensus": "https://consensus.app/search/?q=emerging+preclinical+psychedelic+research",
+      "items": [
+        { "condition": "Neuroinflammation", "drug": "Psychedelics", "tier": "early", "query": "psychedelic AND neuroinflammation" },
+        { "condition": "Longevity", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND (longevity OR lifespan)" }
+      ]
+    }
+  ],
+  "changelog": [
+    { "date": "2026-07", "condition": "PTSD — MDMA", "change": "Emerging → Strong. Multiple phase 3 RCTs published (MAPP1/MAPP2).", "tier": "strong" },
+    { "date": "2026-07", "condition": "Social anxiety in autistic adults — MDMA", "change": "Early → Emerging. Published phase 2 double-blind RCT (Danforth et al.).", "tier": "emerging" },
+    { "date": "2026-07", "condition": "Treatment-resistant depression — 5-MeO-DMT", "change": "Strong → Emerging. Data limited to phase 1b/2a.", "tier": "emerging" },
+    { "date": "2026-07", "condition": "Opioid use disorder — Ibogaine", "change": "Emerging → Early. Observational and open-label cohorts only.", "tier": "early" },
+    { "date": "2026-07", "condition": "Alcohol use disorder — Mescaline", "change": "Emerging → Early. Survey and observational data only, no formal trials.", "tier": "early" }
+  ]
+}

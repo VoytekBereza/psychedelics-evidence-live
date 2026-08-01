@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="#150a1f"></rect><circle cx="100" cy="90" r="45" fill="none" stroke="#c25be0" stroke-width="6"></circle><circle cx="100" cy="90" r="16" fill="#c25be0"></circle><text x="100" y="165" font-family="sans-serif" font-size="17" fill="#f3eef8" text-anchor="middle">Live Evidence</text></svg></template>
+<helmet>
+  <link rel="stylesheet" href="_ds/nocturne-d3d4d816-8a1f-412d-ba47-86bbf653267b/styles.css">
+  <script src="_ds/nocturne-d3d4d816-8a1f-412d-ba47-86bbf653267b/_ds_bundle.js"></script>
+  <style>
+    a { color: #c25be0; }
+    a:hover { color: #d789ee; }
+  </style>
+</helmet>
+<div style="background:#150a1f;min-height:100vh;padding:var(--space-8) var(--space-6);display:flex;flex-direction:column;align-items:center;font-family:var(--font-body);">
+
+  <div style="max-width:1180px;width:100%;">
+
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-5);margin-bottom:var(--space-6);">
+      <div style="text-align:left;">
+        <div style="font-family:var(--font-heading);font-weight:500;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#c25be0;margin-bottom:var(--space-2);">Psychedelic Medicine Research</div>
+        <h1 style="font-family:var(--font-heading);font-weight:500;font-size:37px;line-height:1.15;color:#f3eef8;margin:0 0 var(--space-2) 0;">Every Condition Psychedelics Have Been Studied to Treat</h1>
+        <p style="font-size:15px;color:#b09fc2;margin:0;">Evidence categorised and colour-coded by strength. Sourced from published trials, meta-analyses, and regulatory filings. Scientific evidence is dynamic — this page is reviewed monthly and every card links out to live search.</p>
+      </div>
+      <img src="uploads/Logo_no_background.png" alt="Australian Psychedelic Society logo" style="width:170px;height:auto;flex-shrink:0;">
+    </div>
+
+    <div style="background:#1f1129;border:1px solid #392049;border-radius:var(--radius-md);padding:var(--space-4) var(--space-5);margin-bottom:var(--space-3);display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;justify-content:space-between;">
+      <div style="display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8f7fa1;margin-bottom:3px;">Last reviewed</div>
+          <div style="font-size:14px;font-weight:600;color:#f3eef8;">{{ lastUpdated }}</div>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8f7fa1;margin-bottom:3px;">Next review</div>
+          <div style="font-size:14px;font-weight:600;color:#f3eef8;">{{ nextUpdate }}</div>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8f7fa1;margin-bottom:3px;">Changes this cycle</div>
+          <div style="font-size:14px;font-weight:600;color:#f3eef8;">{{ changeCount }}</div>
+        </div>
+      </div>
+      <button onClick="{{ toggleChangelog }}" style="background:transparent;border:1px solid #c25be0;color:#c25be0;padding:8px 16px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;font-weight:600;font-family:var(--font-body);" style-hover="background:rgba(194,91,224,0.12);">{{ changelogLabel }}</button>
+    </div>
+
+    <sc-if value="{{ showChangelog }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#241234;border:1px solid #3f2354;border-radius:var(--radius-md);padding:var(--space-5);margin-bottom:var(--space-3);">
+        <div style="font-size:14px;font-weight:600;color:#f3eef8;margin-bottom:var(--space-3);font-family:var(--font-heading);">Change log</div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+          <sc-for list="{{ changelog }}" as="entry" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:92px 1fr;gap:var(--space-4);align-items:start;border-left:3px solid {{ entry.color }};padding-left:var(--space-4);">
+              <div style="font-size:12px;color:#8f7fa1;padding-top:1px;">{{ entry.date }}</div>
+              <div>
+                <div style="font-size:13px;color:#f3eef8;font-weight:600;">{{ entry.condition }}</div>
+                <div style="font-size:12.5px;color:#b09fc2;margin-top:2px;">{{ entry.change }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="background:#241234;border:1px solid #3f2354;border-radius:var(--radius-md);padding:var(--space-4) var(--space-5);margin-bottom:var(--space-6);display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;">
+      <span style="font-size:13px;font-weight:500;color:#f3eef8;"><b>Level of Evidence&nbsp;&nbsp;</b></span>
+      <div style="display:flex;align-items:center;gap:var(--space-2);">
+        <span style="width:12px;height:12px;border-radius:3px;background:#3f9d5b;display:inline-block;"></span>
+        <span style="font-size:13px;color:#b09fc2;"><b style="color:#f3eef8;">Strong</b> — multiple RCTs / meta-analyses.&nbsp;</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:var(--space-2);">
+        <span style="width:12px;height:12px;border-radius:3px;background:#c99a3b;display:inline-block;"></span>
+        <span style="font-size:13px;color:#b09fc2;"><b style="color:#f3eef8;">Emerging</b> — phase 2 / pilot trials.&nbsp;</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:var(--space-2);">
+        <span style="width:12px;height:12px;border-radius:3px;background:#b8503f;display:inline-block;"></span>
+        <span style="font-size:13px;color:#b09fc2;"><b style="color:#f3eef8;">Early</b> — case reports, observational, preclinical</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);margin-bottom:var(--space-4);">
+      <sc-for list="{{ cards }}" as="card" hint-placeholder-count="8">
+        <div style="background:#1f1129;border:1px solid #392049;border-radius:var(--radius-md);box-shadow:0 1px 3px rgba(0,0,0,0.25);padding:var(--space-5);display:grid;grid-template-columns:1fr auto;gap:var(--space-4);align-items:start;">
+          <div>
+            <div style="margin-bottom:var(--space-3);">
+              <div style="display:flex;align-items:baseline;gap:var(--space-2);">
+                <span style="width:6px;height:6px;border-radius:50%;background:#c25be0;display:inline-block;"></span>
+                <span style="font-size:16px;font-weight:500;font-family:var(--font-heading);color:#f3eef8;">{{ card.title }}</span>
+              </div>
+              <div style="font-size:13px;font-style:italic;color:#8f7fa1;margin-left:14px;">{{ card.sub }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+              <sc-for list="{{ card.rows }}" as="row" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-2);background:{{ row.bg }};border-radius:var(--radius-sm);padding:10px 14px;">
+                  <span style="font-size:14px;color:#f3f1ea;font-weight:500;flex-shrink:1;min-width:0;">{{ row.condition }}</span>
+                  <div style="display:flex;gap:6px;flex-wrap:nowrap;flex-shrink:0;">
+                    <sc-for list="{{ row.drugs }}" as="d" hint-placeholder-count="1">
+                      <span style="font-size:12px;font-weight:600;color:#fff;background:{{ d.pillBg }};padding:3px 9px;border-radius:20px;white-space:nowrap;">{{ d.name }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="width:104px;display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:2px;">
+            <img src="{{ card.qr }}" width="96" height="96" alt="QR code to Consensus.app search" style="border-radius:var(--radius-sm);background:#fff;border:1px solid #392049;padding:4px;display:block;">
+            <span style="font-size:10.5px;color:#8f7fa1;text-align:center;line-height:1.3;">Scan for live evidence on Consensus</span>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <p style="font-size:12px;color:#9992a0;text-align:left;margin-top:var(--space-4);"><i>*Evidence levels reflect the state of publicly available research at the last review date shown above and are for discussion only, not medical advice. This material does not endorse illicit or unsupervised use.</i></p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;1280px&quot;,&quot;height&quot;:&quot;1400px&quot;}}">
+const GREEN = 'rgba(63,157,91,0.85)';
+const YELLOW = 'rgba(201,154,59,0.85)';
+const RED = 'rgba(184,80,63,0.85)';
+
+const DATA = [
+  { title: 'Depression & Mood', sub: 'The core of the field',
+    consensus: 'https://consensus.app/search/do-psychedelics-work-for-depression-mood/ycOArL0IRmGvd8jPeSI1lg/?utm_source=share&utm_medium=clipboard',
+    items: [
+      { condition: 'Major depressive disorder', drug: 'Psilocybin', bg: GREEN, tier: 0 },
+      { condition: 'Treatment-resistant depression', drug: 'Psilocybin', bg: GREEN, tier: 0 },
+      { condition: 'Treatment-resistant depression', drug: '5-MeO-DMT', bg: YELLOW, tier: 1 },
+      { condition: 'Postpartum depression', drug: '5-MeO-DMT', bg: RED, tier: 2 },
+      { condition: 'Bipolar II depression', drug: 'Psilocybin', bg: RED, tier: 2 },
+    ]},
+  { title: 'Anxiety & PTSD', sub: 'Fear, threat and trauma',
+    consensus: 'https://consensus.app/search/?q=do+psychedelics+help+anxiety+and+ptsd',
+    items: [
+      { condition: 'End-of-life anxiety', drug: 'Psilocybin', bg: GREEN, tier: 0 },
+      { condition: 'PTSD', drug: 'MDMA', bg: GREEN, tier: 0 },
+      { condition: 'Generalized anxiety disorder', drug: 'LSD', bg: YELLOW, tier: 1 },
+      { condition: 'Social anxiety in autistic adults', drug: 'MDMA', bg: YELLOW, tier: 1 },
+    ]},
+  { title: 'Addiction & Substance Use', sub: 'Breaking the loop',
+    consensus: 'https://consensus.app/search/?q=psychedelics+for+addiction+and+substance+use+disorder',
+    items: [
+      { condition: 'Smoking cessation', drug: 'Psilocybin', bg: YELLOW, tier: 1 },
+      { condition: 'Alcohol use disorder', drug: 'Psilocybin', bg: YELLOW, tier: 1 },
+      { condition: 'Alcohol use disorder', drug: 'Mescaline', bg: RED, tier: 2 },
+      { condition: 'Alcohol use disorder', drug: 'Noribogaine', bg: RED, tier: 2 },
+      { condition: 'Opioid use disorder', drug: 'Ibogaine', bg: RED, tier: 2 },
+      { condition: 'Cocaine & methamphetamine use', drug: 'Psilocybin', bg: RED, tier: 2 },
+    ]},
+  { title: 'Pain & Headache', sub: 'Some of medicine\u2019s hardest cases',
+    consensus: 'https://consensus.app/search/?q=psychedelics+for+migraine+and+cluster+headache',
+    items: [
+      { condition: 'Cluster headache', drug: 'Psilocybin', bg: YELLOW, tier: 1 },
+      { condition: 'Migraine', drug: 'Psilocybin', bg: YELLOW, tier: 1 },
+      { condition: 'Fibromyalgia', drug: 'Psilocybin', bg: RED, tier: 2 },
+      { condition: 'Chronic & phantom limb pain', drug: 'Psilocybin', bg: RED, tier: 2 },
+    ]},
+  { title: 'Neurology & Brain Injury', sub: 'Regrowing connections',
+    consensus: 'https://consensus.app/search/?q=psychedelics+for+traumatic+brain+injury+and+neurology',
+    items: [
+      { condition: 'Traumatic brain injury (veterans)', drug: 'Ibogaine', bg: YELLOW, tier: 1 },
+      { condition: 'Parkinson\u2019s disease', drug: 'Psilocybin', bg: RED, tier: 2 },
+      { condition: 'Stroke recovery', drug: 'Psychedelics', bg: RED, tier: 2 },
+    ]},
+  { title: 'Compulsive & Body-Focused', sub: 'Stuck thoughts, self-image',
+    consensus: 'https://consensus.app/search/?q=psilocybin+for+ocd+and+body+dysmorphic+disorder',
+    items: [
+      { condition: 'Obsessive-compulsive disorder', drug: 'Psilocybin', bg: YELLOW, tier: 1 },
+      { condition: 'Body dysmorphic disorder', drug: 'Psilocybin', bg: RED, tier: 2 },
+      { condition: 'Eating disorders / anorexia', drug: 'Psilocybin', bg: RED, tier: 2 },
+    ]},
+  { title: 'Palliative & End-of-Life Care', sub: 'Loss of meaning and hope',
+    consensus: 'https://consensus.app/search/?q=psilocybin+for+end+of+life+distress',
+    items: [
+      { condition: 'Demoralization, long-term AIDS survivors', drug: 'Psilocybin', bg: RED, tier: 2 },
+    ]},
+  { title: 'Emerging & Preclinical', sub: 'Whole-body, newly-explored targets',
+    consensus: 'https://consensus.app/search/?q=emerging+preclinical+psychedelic+research',
+    items: [
+      { condition: 'Neuroinflammation', drug: 'Psychedelics', bg: RED, tier: 2 },
+      { condition: 'Longevity', drug: 'Psilocybin', bg: RED, tier: 2 },
+    ]},
+];
+
+const CHANGELOG = [
+  { date: 'Jul 2026', condition: 'PTSD — MDMA', change: 'Emerging \u2192 Strong. Multiple phase 3 RCTs published (MAPP1/MAPP2).', color: '#3f9d5b' },
+  { date: 'Jul 2026', condition: 'Social anxiety in autistic adults — MDMA', change: 'Early \u2192 Emerging. Published phase 2 double-blind RCT (Danforth et al.).', color: '#c99a3b' },
+  { date: 'Jul 2026', condition: 'Treatment-resistant depression — 5-MeO-DMT', change: 'Strong \u2192 Emerging. Data limited to phase 1b/2a.', color: '#c99a3b' },
+  { date: 'Jul 2026', condition: 'Opioid use disorder — Ibogaine', change: 'Emerging \u2192 Early. Observational and open-label cohorts only.', color: '#b8503f' },
+  { date: 'Jul 2026', condition: 'Alcohol use disorder — Mescaline', change: 'Emerging \u2192 Early. Survey and observational data only, no formal trials.', color: '#b8503f' },
+];
+
+function parseRgba(str) {
+  const m = str.match(/rgba?\(([^)]+)\)/);
+  const [r, g, b, a] = m[1].split(',').map(s => parseFloat(s));
+  return { r, g, b, a: a === undefined ? 1 : a };
+}
+
+function blendColors(colors) {
+  const uniq = [...new Set(colors)];
+  if (uniq.length === 1) return uniq[0];
+  const parsed = uniq.map(parseRgba);
+  const n = parsed.length;
+  const avg = k => Math.round(parsed.reduce((s, c) => s + c[k], 0) / n);
+  const a = parsed.reduce((s, c) => s + c.a, 0) / n;
+  return `rgba(${avg('r')},${avg('g')},${avg('b')},${a.toFixed(2)})`;
+}
+
+function groupRows(items) {
+  const out = [];
+  const index = {};
+  items.forEach(it => {
+    if (index[it.condition] === undefined) {
+      index[it.condition] = out.length;
+      out.push({ condition: it.condition, drugs: [] });
+    }
+    out[index[it.condition]].drugs.push({ name: it.drug, pillBg: it.bg, tier: it.tier });
+  });
+  return out.map(row => ({
+    condition: row.condition,
+    drugs: row.drugs,
+    bg: row.drugs.length === 1 ? row.drugs[0].pillBg : blendColors(row.drugs.map(d => d.pillBg)),
+    tier: row.drugs.reduce((s, d) => s + d.tier, 0) / row.drugs.length,
+  })).sort((a, b) => a.tier - b.tier);
+}
+
+function qrFor(url) {
+  return 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url);
+}
+
+const TIER_COLOR = { strong: GREEN, emerging: YELLOW, early: RED };
+const TIER_SWATCH = { strong: '#3f9d5b', emerging: '#c99a3b', early: '#b8503f' };
+const TIER_RANK = { strong: 0, emerging: 1, early: 2 };
+
+function fromJson(json) {
+  return {
+    sections: json.sections.map(s => ({
+      title: s.title,
+      sub: s.sub,
+      consensus: s.consensus,
+      items: s.items.map(i => ({
+        condition: i.condition,
+        drug: i.drug,
+        bg: TIER_COLOR[i.tier] || RED,
+        tier: TIER_RANK[i.tier] ?? 2,
+      })),
+    })),
+    changelog: json.changelog.map(c => ({
+      date: new Date(c.date + '-01').toLocaleDateString('en-AU', { month: 'short', year: 'numeric' }),
+      condition: c.condition,
+      change: c.change,
+      color: TIER_SWATCH[c.tier] || '#8f7fa1',
+    })),
+    lastReviewed: json.meta && json.meta.lastReviewed,
+    nextReview: json.meta && json.meta.nextReview,
+  };
+}
+
+class Component extends DCLogic {
+  state = { showChangelog: false, live: null };
+
+  componentDidMount() {
+    fetch('data.json')
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then(json => this.setState({ live: fromJson(json) }))
+      .catch(() => {}); // keep the baked-in fallback
+  }
+
+  renderVals() {
+    const live = this.state.live;
+    const sections = live ? live.sections : DATA;
+    const changelog = live ? live.changelog : CHANGELOG;
+
+    const now = new Date();
+    const fmt = d => d.toLocaleDateString('en-AU', { month: 'long', year: 'numeric' });
+    const parse = s => (s ? new Date(s) : null);
+    const reviewed = (live && parse(live.lastReviewed)) || now;
+    const next = (live && parse(live.nextReview)) || new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+    return {
+      cards: sections.map(c => ({ title: c.title, sub: c.sub, qr: qrFor(c.consensus), rows: groupRows(c.items) })),
+      changelog,
+      changeCount: String(changelog.length),
+      lastUpdated: fmt(reviewed),
+      nextUpdate: fmt(next),
+      showChangelog: this.state.showChangelog,
+      changelogLabel: this.state.showChangelog ? 'Hide change log' : 'View change log',
+      toggleChangelog: () => this.setState(s => ({ showChangelog: !s.showChangelog })),
+    };
+  }
+}
+</script>
+</body>
+</html>

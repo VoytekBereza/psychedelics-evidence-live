@@ -260,7 +260,7 @@ var currentTiers = null;
                           return results.map(function(r) {
                                       var info = classifyStudy((r.pubTypeList && r.pubTypeList.pubType) || []);
                                       var link = r.doi ? ('https://doi.org/' + r.doi) : (r.pmid ? ('https://europepmc.org/article/MED/' + r.pmid) : null);
-                                      return { year: r.pubYear || String.fromCharCode(8212), title: (r.title || 'Untitled').replace(/<[^>]+>/g, ''), label: info.label, color: info.color, url: link };
+                                      return { year: r.pubYear || String.fromCharCode(8212), title: decodeEntities(r.title || 'Untitled').replace(/<[^>]+>/g, ''), label: info.label, color: info.color, url: link };
                           });
                 });
         }
@@ -350,7 +350,13 @@ var currentTiers = null;
       return d.toLocaleDateString('en-AU', { month: 'short', year: 'numeric' });
     }
 
-    function escapeHtml(str) {
+function decodeEntities(str) {
+        var el = document.createElement('textarea');
+        el.innerHTML = str;
+        return el.value;
+}
+    
+        function escapeHtml(str) {
       var div = document.createElement('div');
       div.textContent = String(str);
       return div.innerHTML;

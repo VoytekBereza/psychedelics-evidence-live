@@ -64,6 +64,22 @@
     .qrbox img { border-radius:var(--radius-sm); background:#fff; border:1px solid #392049; padding:4px; display:block; }
     .qrcap { font-size:10.5px; color:#8f7fa1; text-align:center; line-height:1.3; }
     .footnote { font-size:12px; color:#9992a0; text-align:left; margin-top:var(--space-4); }
+    .row { cursor:pointer; transition:filter 0.1s ease; }
+    .row:hover { filter:brightness(1.08); }
+    .row-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .chevron { display:inline-block; font-size:10px; color:rgba(255,255,255,0.75); transition:transform 0.15s ease; }
+    .row.expanded .chevron { transform:rotate(180deg); }
+    .study-panel { display:none; margin-top:6px; padding:2px 14px 10px 14px; }
+    .study-panel.open { display:block; }
+    .study-item { padding:8px 0; border-top:1px solid rgba(255,255,255,0.1); }
+    .study-item:first-child { border-top:none; }
+    .study-meta { display:flex; align-items:center; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
+    .study-year { font-size:12px; color:#8f7fa1; font-weight:600; }
+    .study-type { font-size:10.5px; font-weight:700; color:#150a1f; padding:2px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:0.03em; white-space:nowrap; }
+    .study-title { font-size:13px; color:#e8e0ee; line-height:1.4; }
+    .study-title a { color:inherit; text-decoration:none; }
+    .study-title a:hover { text-decoration:underline; }
+    .study-loading, .study-empty, .study-error { font-size:12.5px; color:#8f7fa1; padding:4px 0; }
     @media (max-width:640px) {
         .wrap { padding: var(--space-5) var(--space-3); }
         h1 { font-size: 26px; }
@@ -206,7 +222,86 @@
         ]
     };
 
-    function qrFor(url) {
+var currentTiers = null;
+        var rowQueryMap = {};
+        var rowSeq = 0;
+    
+        function classifyStudy(types) {
+                var joined = (types || []).join('|').toLowerCase();
+                var tiers = currentTiers || {};
+                function color(key, fallback) { return (tiers[key] && tiers[key].swatch) || fallback; }
+                if (joined.indexOf('meta-analysis') !== -1 || joined.indexOf('systematic review') !== -1) {
+                          return { label: 'Meta-analysis', color: color('strong', '#5a9c6f') };
+                }
+                if (joined.indexOf('randomized controlled trial') !== -1) {
+                          return { label: 'RCT', color: color('strong', '#5a9c6f') };
+                }
+                if (joined.indexOf('clinical trial') !== -1) {
+                          return { label: 'Clinical trial', color: color('emerging', '#c9a24b') };
+                }
+                if (joined.indexOf('cohort') !== -1 || joined.indexOf('comparative study') !== -1) {
+                          return { label: 'Cohort study', color: color('emerging', '#c9a24b') };
+                }
+                if (joined.indexOf('case reports') !== -1 || joined.indexOf('case report') !== -1) {
+                          return { label: 'Case report', color: color('early', '#b8503f') };
+                }
+                if (joined.indexOf('review') !== -1) {
+                          return { label: 'Review', color: color('early', '#b8503f') };
+                }
+                return { label: 'Study', color: color('emerging', '#c9a24b') };
+        }
+    
+        function fetchStudies(queries) {
+                var combined = (queries || []).filter(Boolean).map(function(q){ return '(' + q + ')'; }).join(' OR ');
+                if (!combined) return Promise.resolve([]);
+                var url = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=' + encodeURIComponent(combined) + '&format=json&resultType=core&sort=P_PDATE_D%20desc&pageSize=5';
+                return fetch(url).then(function(r) { if (!r.ok) throw new Error('bad status'); return r.json(); }).then(function(json) {
+                          var results = (json.resultList && json.resultList.result) || [];
+                          return results.map(function(r) {
+                                      var info = classifyStudy((r.pubTypeList && r.pubTypeList.pubType) || []);
+                                      var link = r.doi ? ('https://doi.org/' + r.doi) : (r.pmid ? ('https://europepmc.org/article/MED/' + r.pmid) : null);
+                                      return { year: r.pubYear || String.fromCharCode(8212), title: r.title || 'Untitled', label: info.label, color: info.color, url: link };
+                          });
+                });
+        }
+    
+        function wireRowClicks(grid) {
+                if (grid.dataset.wired) return;
+                grid.dataset.wired = '1';
+                grid.addEventListener('click', function(e) {
+                          var row = e.target.closest('.row');
+                          if (!row || !grid.contains(row)) return;
+                          var rowId = row.getAttribute('data-row-id');
+                          var panel = document.getElementById('panel-' + rowId);
+                          if (!panel) return;
+                          var isOpen = panel.classList.contains('open');
+                          if (isOpen) {
+                                      panel.classList.remove('open');
+                                      row.classList.remove('expanded');
+                                      return;
+                          }
+                          panel.classList.add('open');
+                          row.classList.add('expanded');
+                          if (panel.dataset.loaded) return;
+                          panel.dataset.loaded = '1';
+                          panel.innerHTML = '<div class="study-loading">Loading recent studies\u2026</div>';
+                          fetchStudies(rowQueryMap[rowId]).then(function(studies) {
+                                      if (!studies.length) { panel.innerHTML = '<div class="study-empty">No indexed studies found for this search.</div>'; return; }
+                                      panel.innerHTML = studies.map(function(s) {
+                                                    return '<div class="study-item">' +
+                                                                    '<div class="study-meta"><span class="study-year">' + escapeHtml(String(s.year)) + '</span>' +
+                                                                    '<span class="study-type" style="background:' + s.color + '">' + escapeHtml(s.label) + '</span></div>' +
+                                                                    '<div class="study-title">' + (s.url ? '<a href="' + s.url + '" target="_blank" rel="noopener">' + escapeHtml(s.title) + '</a>' : escapeHtml(s.title)) + '</div>' +
+                                                                    '</div>';
+                                      }).join('');
+                          }).catch(function() {
+                                      panel.innerHTML = '<div class="study-error">Could not load live studies right now, try again shortly.</div>';
+                                      panel.dataset.loaded = '';
+                          });
+                });
+        }
+    
+        function qrFor(url) {
       return 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url);
     }
 
@@ -235,7 +330,7 @@
           out.push({ condition: it.condition, drugs: [] });
         }
         var tierInfo = tiers[it.tier] || { color: 'rgba(184,80,63,0.85)', rank: 2 };
-        out[index[it.condition]].drugs.push({ name: it.drug, pillBg: tierInfo.color, tier: tierInfo.rank });
+        out[index[it.condition]].drugs.push({ name: it.drug, pillBg: tierInfo.color, tier: tierInfo.rank, query: it.query });
       });
       return out.map(function(row) {
         var bg = row.drugs.length === 1 ? row.drugs[0].pillBg : blendColors(row.drugs.map(function(d){ return d.pillBg; }));
@@ -263,6 +358,7 @@
 
     function render(json) {
       var tiers = json.tiers;
+            currentTiers = tiers;
 
       document.getElementById('lastUpdated').textContent = fmtMonthYear(json.meta.lastReviewed);
       document.getElementById('nextUpdate').textContent = fmtMonthYear(json.meta.nextReview);
@@ -290,9 +386,11 @@
         var rows = groupRows(section.items, tiers);
         var rowsHtml = rows.map(function(row) {
           var pills = row.drugs.map(function(d) {
-            return '<span class="pill" style="background:' + d.pillBg + '">' + escapeHtml(d.name) + '</span>';
+                        return '<span class="pill" style="background:' + d.pillBg + '">' + escapeHtml(d.name) + '</span>';
           }).join('');
-          return '<div class="row" style="background:' + row.bg + '"><span class="row-condition">' + escapeHtml(row.condition) + '</span><div class="pills">' + pills + '</div></div>';
+                    var rowId = 'row' + (rowSeq++);
+                    rowQueryMap[rowId] = row.drugs.map(function(d){ return d.query; });
+                    return '<div class="row-wrap"><div class="row" data-row-id="' + rowId + '"><span class="row-condition">' + escapeHtml(row.condition) + '</span><div class="row-right"><div class="pills">' + pills + '</div><span class="chevron">\u25be</span></div></div><div class="study-panel" id="panel-' + rowId + '"></div></div>';
         }).join('');
         return '<div class="card">' +
           '<div>' +
@@ -306,6 +404,7 @@
           '</div>' +
           '</div>';
       }).join('');
+            wireRowClicks(grid);
     }
 
     document.getElementById('toggleChangelogBtn').addEventListener('click', function() {

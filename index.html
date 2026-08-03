@@ -335,7 +335,7 @@ var currentTiers = null;
       return out.map(function(row) {
         var bg = row.drugs.length === 1 ? row.drugs[0].pillBg : blendColors(row.drugs.map(function(d){ return d.pillBg; }));
         var tier = row.drugs.reduce(function(s, d){ return s + d.tier; }, 0) / row.drugs.length;
-        return { condition: row.condition, drugs: row.drugs, bg: bg, tier: tier };
+        var bgP = parseRgba(bg); var rowBg = 'rgba(' + bgP.r + ',' + bgP.g + ',' + bgP.b + ',0.55)'; return { condition: row.condition, drugs: row.drugs, bg: bg, rowBg: rowBg, tier: tier };
       }).sort(function(a, b){ return a.tier - b.tier; });
     }
 
@@ -396,7 +396,7 @@ function decodeEntities(str) {
           }).join('');
                     var rowId = 'row' + (rowSeq++);
                     rowQueryMap[rowId] = row.drugs.map(function(d){ return d.query; });
-                    return '<div class="row-wrap"><div class="row" data-row-id="' + rowId + '"><span class="row-condition">' + escapeHtml(row.condition) + '</span><div class="row-right"><div class="pills">' + pills + '</div><span class="chevron">\u25be</span></div></div><div class="study-panel" id="panel-' + rowId + '"></div></div>';
+                    return '<div class="row-wrap"><div class="row" data-row-id="' + rowId + '" style="background:' + row.rowBg + '"><span class="row-condition">' + escapeHtml(row.condition) + '</span><div class="row-right"><div class="pills">' + pills + '</div><span class="chevron">\u25be</span></div></div><div class="study-panel" id="panel-' + rowId + '"></div></div>';
         }).join('');
         return '<div class="card">' +
           '<div>' +

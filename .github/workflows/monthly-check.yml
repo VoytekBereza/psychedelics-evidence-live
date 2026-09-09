@@ -1,0 +1,45 @@
+name: Monthly evidence check
+
+on:
+  schedule:
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run evidence check
+        id: check
+        run: |
+          set +e
+          node check-evidence.js > report.txt
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          cat report.txt
+
+      - name: Open issue for flagged entries
+        if: steps.check.outputs.exit_code == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "Evidence check $(date -u +%Y-%m) - entries flagged for review" \
+            --body-file report.txt
+
+      - name: Fail the run if the checker itself errored
+        if: steps.check.outputs.exit_code == '2'
+        run: |
+          echo "check-evidence.js exited with an error - see the 'Run evidence check' step above."
+          exit 1

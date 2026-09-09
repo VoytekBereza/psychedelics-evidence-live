@@ -37,12 +37,28 @@ async function epmc(query, extra = '') {
   return res.json();
 }
 
+function scoped(query) {
+  // Europe PMC's default search matches full text (methods, references, figure
+  // captions, etc.), so a bare AND query pulls in papers that merely mention a
+  // drug or condition somewhere, not papers actually about that pair. Restricting
+  // to TITLE/ABSTRACT keeps results to papers whose actual subject is the pair.
+  let q = `(TITLE:(${query}) OR ABSTRACT:(${query}))`;
+  // "LSD" collides hard with "lysosomal storage disease" (and "least significant
+  // difference" in stats sections) in the biomedical literature. Excluding the
+  // disease sense removes the single largest source of false positives for it.
+  if (/\bLSD\b/.test(query)) {
+    q += ' NOT (TITLE:"lysosomal storage" OR ABSTRACT:"lysosomal storage")';
+  }
+  return q;
+}
+
 async function countsFor(query) {
   // Publication-type filters are Europe PMC's own indexed types.
+  const q = scoped(query);
   const [rct, meta, all] = await Promise.all([
-    epmc(query, ' AND PUB_TYPE:"Randomized Controlled Trial"'),
-    epmc(query, ' AND (PUB_TYPE:"Meta-Analysis" OR PUB_TYPE:"Systematic Review")'),
-    epmc(query, ' AND (SRC:MED OR SRC:PMC)'),
+    epmc(q, ' AND PUB_TYPE:"Randomized Controlled Trial"'),
+    epmc(q, ' AND (PUB_TYPE:"Meta-Analysis" OR PUB_TYPE:"Systematic Review")'),
+    epmc(q, ' AND (SRC:MED OR SRC:PMC)'),
   ]);
   return {
     rcts: rct.hitCount ?? 0,

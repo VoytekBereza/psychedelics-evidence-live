@@ -9,14 +9,14 @@
  * It does NOT change tiers automatically. Tier assignment needs a human to read the
  * papers. This produces a report; you confirm, then edit data.json.
  *
- * Usage:  node scripts/check-evidence.js            (report to stdout)
- *         node scripts/check-evidence.js --write    (also writes evidence-report.json)
+  * Usage:  node check-evidence.js                      (report to stdout)
+  *         node check-evidence.js --write    (also writes evidence-report.json)
  */
 
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.join(__dirname, '..');
+const ROOT = __dirname; // this script lives at repo root, alongside data.json
 const DATA_PATH = path.join(ROOT, 'data.json');
 const REPORT_PATH = path.join(ROOT, 'evidence-report.json');
 const EPMC = 'https://www.ebi.ac.uk/europepmc/webservices/rest/search';

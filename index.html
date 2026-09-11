@@ -149,8 +149,8 @@
   <script>
     var FALLBACK_DATA = {
       "meta": {
-        "lastReviewed": "2026-07-01",
-        "nextReview": "2026-08-01",
+        "lastReviewed": "2026-09-11",
+        "nextReview": "2026-10-01",
         "note": "Tier changes are proposed by scripts/check-evidence.js and confirmed by a human before publishing."
       },
       "tiers": {
@@ -165,7 +165,7 @@
            { "condition": "Treatment-resistant depression", "drug": "Psilocybin", "tier": "strong" },
            { "condition": "Treatment-resistant depression", "drug": "5-MeO-DMT", "tier": "emerging" },
            { "condition": "Postpartum depression", "drug": "5-MeO-DMT", "tier": "early" },
-           { "condition": "Bipolar II depression", "drug": "Psilocybin", "tier": "early" }
+           { "condition": "Bipolar II depression", "drug": "Psilocybin", "tier": "emerging" }
            ]},
         { "title": "Anxiety & PTSD", "sub": "Fear, threat and trauma", "consensus": "https://consensus.app/search/?q=do+psychedelics+help+anxiety+and+ptsd",
          "items": [
@@ -177,11 +177,11 @@
         { "title": "Addiction & Substance Use", "sub": "Breaking the loop", "consensus": "https://consensus.app/search/?q=psychedelics+for+addiction+and+substance+use+disorder",
          "items": [
            { "condition": "Smoking cessation", "drug": "Psilocybin", "tier": "emerging" },
-           { "condition": "Alcohol use disorder", "drug": "Psilocybin", "tier": "emerging" },
+           { "condition": "Alcohol use disorder", "drug": "Psilocybin", "tier": "strong" },
            { "condition": "Alcohol use disorder", "drug": "Mescaline", "tier": "early" },
            { "condition": "Alcohol use disorder", "drug": "Noribogaine", "tier": "early" },
            { "condition": "Opioid use disorder", "drug": "Ibogaine", "tier": "early" },
-           { "condition": "Cocaine & methamphetamine use", "drug": "Psilocybin", "tier": "early" }
+           { "condition": "Cocaine & methamphetamine use", "drug": "Psilocybin", "tier": "strong" }
            ]},
         { "title": "Pain & Headache", "sub": "Some of medicine's hardest cases", "consensus": "https://consensus.app/search/?q=psychedelics+for+migraine+and+cluster+headache",
          "items": [
@@ -204,7 +204,7 @@
            ]},
         { "title": "Palliative & End-of-Life Care", "sub": "Loss of meaning and hope", "consensus": "https://consensus.app/search/?q=psilocybin+for+end+of+life+distress",
          "items": [
-           { "condition": "Demoralization, long-term AIDS survivors", "drug": "Psilocybin", "tier": "early" }
+           { "condition": "Demoralization, long-term AIDS survivors", "drug": "Psilocybin", "tier": "strong" }
            ]},
         { "title": "Emerging & Preclinical", "sub": "Whole-body, newly-explored targets", "consensus": "https://consensus.app/search/?q=emerging+preclinical+psychedelic+research",
          "items": [
@@ -213,6 +213,10 @@
            ]}
         ],
       "changelog": [
+        { "date": "2026-09", "condition": "Alcohol use disorder, Psilocybin", "change": "Emerging to Strong. 5 RCTs and 6 meta-analyses/systematic reviews now indexed.", "tier": "strong" },
+        { "date": "2026-09", "condition": "Cocaine & methamphetamine use, Psilocybin", "change": "Early to Strong. 7 RCTs and 6 meta-analyses/systematic reviews now indexed.", "tier": "strong" },
+        { "date": "2026-09", "condition": "Demoralization, long-term AIDS survivors, Psilocybin", "change": "Early to Strong. 3 RCTs and 2 meta-analyses now indexed.", "tier": "strong" },
+        { "date": "2026-09", "condition": "Bipolar II depression, Psilocybin", "change": "Early to Emerging. 2 published RCTs now indexed.", "tier": "emerging" },
         { "date": "2026-07", "condition": "PTSD, MDMA", "change": "Emerging to Strong. Multiple phase 3 RCTs published (MAPP1/MAPP2).", "tier": "strong" },
         { "date": "2026-07", "condition": "Social anxiety in autistic adults, MDMA", "change": "Early to Emerging. Published phase 2 double-blind RCT (Danforth et al.).", "tier": "emerging" },
         { "date": "2026-07", "condition": "Treatment-resistant depression, 5-MeO-DMT", "change": "Strong to Emerging. Data limited to phase 1b/2a.", "tier": "emerging" },
@@ -259,9 +263,12 @@ var currentTiers = null;
                           return results.map(function(r) {
                                       var info = classifyStudy((r.pubTypeList && r.pubTypeList.pubType) || []);
                                       var link = r.doi ? ('https://doi.org/' + r.doi) : (r.pmid ? ('https://europepmc.org/article/MED/' + r.pmid) : null);
+                                      var sortKey = r.firstPublicationDate || r.electronicPublicationDate || (r.pubYear ? (r.pubYear + '-01-01') : '');
                                       var dateLabel = fmtFullDate(r.firstPublicationDate) || fmtFullDate(r.electronicPublicationDate) || r.pubYear || String.fromCharCode(8212);
-                                      return { date: dateLabel, title: decodeEntities(r.title || 'Untitled').replace(/<[^>]+>/g, ''), label: info.label, color: info.color, url: link };
-                          });
+                                      return { date: dateLabel, sortKey: sortKey, title: decodeEntities(r.title || 'Untitled').replace(/<[^>]+>/g, ''), label: info.label, color: info.color, url: link };
+                          // Fetch keeps newest-first (so the 5 most recent/relevant papers are the ones
+                          // pulled in) but the panel itself reads oldest-to-newest, true chronological order.
+                          }).sort(function(a, b) { return a.sortKey < b.sortKey ? -1 : (a.sortKey > b.sortKey ? 1 : 0); });
                 });
         }
     

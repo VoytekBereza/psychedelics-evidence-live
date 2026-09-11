@@ -1,7 +1,7 @@
 {
   "meta": {
-    "lastReviewed": "2026-07-01",
-    "nextReview": "2026-08-01",
+    "lastReviewed": "2026-09-11",
+    "nextReview": "2026-10-01",
     "note": "Tier changes are proposed by scripts/check-evidence.js and confirmed by a human before publishing."
   },
   "tiers": {
@@ -19,7 +19,7 @@
         { "condition": "Treatment-resistant depression", "drug": "Psilocybin", "tier": "strong", "query": "psilocybin AND \"treatment-resistant depression\"" },
         { "condition": "Treatment-resistant depression", "drug": "5-MeO-DMT", "tier": "emerging", "query": "\"5-MeO-DMT\" AND depression" },
         { "condition": "Postpartum depression", "drug": "5-MeO-DMT", "tier": "early", "query": "\"5-MeO-DMT\" AND \"postpartum depression\"" },
-        { "condition": "Bipolar II depression", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND \"bipolar II\"" }
+        { "condition": "Bipolar II depression", "drug": "Psilocybin", "tier": "emerging", "query": "psilocybin AND \"bipolar II\"" }
       ]
     },
     {
@@ -39,11 +39,11 @@
       "consensus": "https://consensus.app/search/?q=psychedelics+for+addiction+and+substance+use+disorder",
       "items": [
         { "condition": "Smoking cessation", "drug": "Psilocybin", "tier": "emerging", "query": "psilocybin AND \"smoking cessation\"" },
-        { "condition": "Alcohol use disorder", "drug": "Psilocybin", "tier": "emerging", "query": "psilocybin AND \"alcohol use disorder\"" },
+        { "condition": "Alcohol use disorder", "drug": "Psilocybin", "tier": "strong", "query": "psilocybin AND \"alcohol use disorder\"" },
         { "condition": "Alcohol use disorder", "drug": "Mescaline", "tier": "early", "query": "mescaline AND alcohol" },
         { "condition": "Alcohol use disorder", "drug": "Noribogaine", "tier": "early", "query": "noribogaine AND alcohol" },
         { "condition": "Opioid use disorder", "drug": "Ibogaine", "tier": "early", "query": "ibogaine AND \"opioid use disorder\"" },
-        { "condition": "Cocaine & methamphetamine use", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND (cocaine OR methamphetamine)" }
+        { "condition": "Cocaine & methamphetamine use", "drug": "Psilocybin", "tier": "strong", "query": "psilocybin AND (cocaine OR methamphetamine)" }
       ]
     },
     {
@@ -82,7 +82,7 @@
       "sub": "Loss of meaning and hope",
       "consensus": "https://consensus.app/search/?q=psilocybin+for+end+of+life+distress",
       "items": [
-        { "condition": "Demoralization, long-term AIDS survivors", "drug": "Psilocybin", "tier": "early", "query": "psilocybin AND demoralization" }
+        { "condition": "Demoralization, long-term AIDS survivors", "drug": "Psilocybin", "tier": "strong", "query": "psilocybin AND demoralization" }
       ]
     },
     {
@@ -96,6 +96,10 @@
     }
   ],
   "changelog": [
+    { "date": "2026-09", "condition": "Alcohol use disorder — Psilocybin", "change": "Emerging → Strong. 5 RCTs and 6 meta-analyses/systematic reviews now indexed.", "tier": "strong" },
+    { "date": "2026-09", "condition": "Cocaine & methamphetamine use — Psilocybin", "change": "Early → Strong. 7 RCTs and 6 meta-analyses/systematic reviews now indexed.", "tier": "strong" },
+    { "date": "2026-09", "condition": "Demoralization, long-term AIDS survivors — Psilocybin", "change": "Early → Strong. 3 RCTs and 2 meta-analyses now indexed.", "tier": "strong" },
+    { "date": "2026-09", "condition": "Bipolar II depression — Psilocybin", "change": "Early → Emerging. 2 published RCTs now indexed.", "tier": "emerging" },
     { "date": "2026-07", "condition": "PTSD — MDMA", "change": "Emerging → Strong. Multiple phase 3 RCTs published (MAPP1/MAPP2).", "tier": "strong" },
     { "date": "2026-07", "condition": "Social anxiety in autistic adults — MDMA", "change": "Early → Emerging. Published phase 2 double-blind RCT (Danforth et al.).", "tier": "emerging" },
     { "date": "2026-07", "condition": "Treatment-resistant depression — 5-MeO-DMT", "change": "Strong → Emerging. Data limited to phase 1b/2a.", "tier": "emerging" },

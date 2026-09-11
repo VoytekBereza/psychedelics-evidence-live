@@ -259,7 +259,8 @@ var currentTiers = null;
                           return results.map(function(r) {
                                       var info = classifyStudy((r.pubTypeList && r.pubTypeList.pubType) || []);
                                       var link = r.doi ? ('https://doi.org/' + r.doi) : (r.pmid ? ('https://europepmc.org/article/MED/' + r.pmid) : null);
-                                      return { year: r.pubYear || String.fromCharCode(8212), title: decodeEntities(r.title || 'Untitled').replace(/<[^>]+>/g, ''), label: info.label, color: info.color, url: link };
+                                      var dateLabel = fmtFullDate(r.firstPublicationDate) || fmtFullDate(r.electronicPublicationDate) || r.pubYear || String.fromCharCode(8212);
+                                      return { date: dateLabel, title: decodeEntities(r.title || 'Untitled').replace(/<[^>]+>/g, ''), label: info.label, color: info.color, url: link };
                           });
                 });
         }
@@ -288,7 +289,7 @@ var currentTiers = null;
                                       if (!studies.length) { panel.innerHTML = '<div class="study-empty">No indexed studies found for this search.</div>'; return; }
                                       panel.innerHTML = studies.map(function(s) {
                                                     return '<div class="study-item">' +
-                                                                    '<div class="study-meta"><span class="study-year">' + escapeHtml(String(s.year)) + '</span>' +
+                                                                    '<div class="study-meta"><span class="study-year">' + escapeHtml(String(s.date)) + '</span>' +
                                                                     '<span class="study-type" style="background:' + s.color + '">' + escapeHtml(s.label) + '</span></div>' +
                                                                     '<div class="study-title">' + (s.url ? '<a href="' + s.url + '" target="_blank" rel="noopener">' + escapeHtml(s.title) + '</a>' : escapeHtml(s.title)) + '</div>' +
                                                                     '</div>';
@@ -347,6 +348,13 @@ var currentTiers = null;
     function fmtMonthYearShort(dateStr) {
       var d = new Date(dateStr.length === 7 ? dateStr + '-01' : dateStr);
       return d.toLocaleDateString('en-AU', { month: 'short', year: 'numeric' });
+    }
+
+    function fmtFullDate(dateStr) {
+      if (!dateStr) return null;
+      var d = new Date(dateStr);
+      if (isNaN(d.getTime())) return null;
+      return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
 function decodeEntities(str) {
